@@ -44,9 +44,10 @@ function startScans (fbid) {
 
     function countPeople (err, data) {
         if (err) throw err;
-        if (!data.results) {
+        if (!data || !data.results) {
             logger.error('Empty results!')
             logger.error(data)
+            data.reason = "No recommendations received."
             socket.send({
                 data: data,
                 type: 'err',
