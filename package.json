@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "babel --source-maps --out-dir lib/ src/ --watch",
-    "start": "babel --source-maps --out-dir lib/ src/ && node lib/index.js"
+    "start": "babel --out-dir lib/ src/ && node lib/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,8 @@
     "mongojs": "~2.2.2",
     "socket.io": "~1.3.7",
     "tinderjs": "~1.0.8",
+    "babel-cli": "~6.3.17",
+    "babel-preset-es2015": "~6.3.13",
     "winston": "~2.1.1"
   },
   "devDependencies": {
