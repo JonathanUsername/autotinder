@@ -2,15 +2,16 @@ import * as _ from 'lodash';
 import express from 'express';
 import Path from 'path';
 import ejs from 'ejs';
-import logger from './logger.js';
-import { authorise } from './tinder.js';
 import Hapi from 'hapi';
+import logger from './logger.js';
+import { authorise, startScans } from './tinder.js';
+import socket from './socket.js'
 
 const server = new Hapi.Server();
 
 server.connection({ port: 3000 });
 
-var io = require('socket.io')(server.listener);
+socket.register(server.listener)
 
 server.register(require('inert'), (err) => {
 
@@ -18,16 +19,53 @@ server.register(require('inert'), (err) => {
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-      console.log('hit')
-      reply.file('public/liking.html');
+      reply.file('public/index.html');
     }
   });
 
-  io.on('connection', function(socket){
-    console.log('a user connected');
-    socket.on('disconnect', function(){
-      console.log('user disconnected');
-    });
+  server.route({
+    method: 'GET',
+    path: '/success',
+    handler: function (request, reply) {
+      var token = request.query.token;
+      var id = request.query.id;
+      logger.info(`TOKEN is : ${token}`);
+      logger.info(`ID is : ${id}`);
+      try {
+        authorise(token, id, (err) => {
+          if (!err) {
+            reply.file('public/liking.html');
+          } else {
+            authError(reply, err);
+          }
+        });
+      } catch(e) {
+        authError(e);
+      }
+    }
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/start',
+    handler: function (request, reply) {
+      var id = request.query.id;
+      logger.info(`ID is : ${id}`);
+      startScans(id);
+    }
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/{file*}',
+    config: {
+      handler: {
+        directory: {
+          path:  'public',
+          listing: false
+        }
+      }
+    }
   });
 
   server.start((err) => {
@@ -37,6 +75,10 @@ server.register(require('inert'), (err) => {
 
 });
 
+function authError (reply, e) {
+  logger.error(e);
+  reply('Error authenticating:', JSON.stringify(e, null, 2), 'Try Logging in again.');
+}
 
 
 // server.register(require('inert'), (err) => {

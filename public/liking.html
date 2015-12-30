@@ -3,18 +3,80 @@
 <head>
 <title>Tinderbot</title>
 <meta charset="UTF-8">
+<link rel='stylesheet' href='styles.css' >
 </head>
 <body>
 
-<p>Hello! Messages:</p>
+<div id="start">Start!</div>
 
-<ul id="messages"></ul>
+<div id="error"></div>
 
-<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<div id="details">
+
+	<div class="divider"></div>
+
+	<p id="matched_people_label" class="biglabel">People I've matched:</p>
+	<ul id="matched_people"></ul>
+
+	<div class="divider"></div>
+
+	<p id="seen_people_label" class="biglabel">People I've seen:</p>
+	<ul id="seen_people"></ul>
+</div>
+
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
+
+  socket.on('seen', function (msg) {
+  	$('#details').show();
+  	msg.data.forEach(function(i, index){
+  		window.setTimeout(function(){
+  			display($('#seen_people'), i)
+  		}, index * 200)
+  	})
+  })
+
+  socket.on('match', function (msg) {
+  	$('#details').show();
+  	display($('#matched_people'), msg.data)
+  })
+
+  socket.on('err', function (msg) {
+  	$('#error').text('Error:\n\n' + JSON.stringify(msg.data)).show()
+  })
+
+  $('#start').click(function(){
+  	$('#seen_people').empty();
+  	$('#error').hide();
+  	socket.emit('start', {
+  		fbid: location.search.split('=')[2],
+  		sockid: socket.id
+  	})
+  })
+
+  function display (elem, i) {
+  	elem.append('<li class="person">' + 
+  		field('p', i.name, 'Name') +
+  		field('img', i.photos[0].url) +
+  		field('p', i.bio, 'Bio') +
+  		i.common_friends.length > 0 ? field('p', i.common_friends.length, 'Common friends') : '' +
+	  	'</li>');
+  	function field (tag, field, label) {
+  		var fulllabel;
+  		if (tag == 'img') {
+  			return '<img src=' + field + ' />'
+  		} 
+  		if (label) {
+  			fulllabel = '<h3>' + label + ': </h3>';
+  		} else {
+  			fulllabel = ''
+  		}
+  		return fulllabel + '<' + tag + '>' + field + '</' + tag + '>'
+  	}
+  }
+
 </script>
 </body>
 </html>
