@@ -3,6 +3,7 @@ var socket = io();
 socket.on('seen', function (msg) {
   $('#details').fadeIn();
   $('#start').fadeIn();
+  console.log(msg)
   msg.data.forEach(function(i, index){
     window.setTimeout(function(){
       display($('#seen_people'), i)
@@ -15,11 +16,13 @@ socket.on('hello', function(msg) {
 })
 
 socket.on('match', function (msg) {
+  console.log(msg)
   $('#details').fadeIn();
   display($('#matched_people'), msg.data)
 })
 
 socket.on('err', function (msg) {
+  console.log(msg)
   $('#error').text('Error:\n\n' + JSON.stringify(msg.data)).fadeIn()
 })
 
