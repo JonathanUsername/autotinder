@@ -31,7 +31,9 @@ $('#start').click(function(){
 	$('#start').hide();
 	$('#error').hide();
 	socket.emit('start', {
-		fbid: location.search.split('=')[2],
+    fbid: getParameterByName('id'),
+    hitQuota: getParameterByName('hitQuota'),
+		message: getParameterByName('message'),
 		sockid: socket.id
 	})
 })
@@ -56,4 +58,11 @@ function displayPerson (elem, i) {
 		}
 		return fulllabel + '<' + tag + '>' + field + '</' + tag + '>'
 	}
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }

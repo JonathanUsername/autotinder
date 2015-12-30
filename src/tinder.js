@@ -4,7 +4,8 @@ import db from './db.js';
 import socket from './socket.js';
 
 const peopleLimit = 10;
-const hitsBeforeLiking = 2;
+const defaultHitQuota = 2;
+const defaultMessage = 'Hey ;)';
 const repeats = 5;
 
 const seenPeople = {};
@@ -26,7 +27,10 @@ function authorise (token, id, cb) {
     })	
 }
 
-function startScans (fbid) {
+function startScans (fbid, hitQuota, message) {
+    const hitsBeforeLiking = hitQuota || defaultHitQuota;
+    const messageToSend = message || defaultMessage;
+
     let counter = 0;
 
     for (let i = 0; i < repeats; i++) {
@@ -98,7 +102,7 @@ function startScans (fbid) {
                     fbid: fbid
                 })
                 logger.info('It\'s a match!');
-                client.sendMessage(id, 'Hey ;)');
+                client.sendMessage(id, message);
             }
         })
     }

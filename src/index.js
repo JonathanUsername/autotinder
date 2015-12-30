@@ -29,8 +29,9 @@ server.register(require('inert'), (err) => {
     method: 'GET',
     path: '/success',
     handler: function (request, reply) {
-      var token = request.query.token;
-      var id = request.query.id;
+      const token = request.query.token;
+      const id = request.query.id;
+      const hitQuota = request.query.hitQuota;
       logger.info(`TOKEN is : ${token}`);
       logger.info(`ID is : ${id}`);
       try {
@@ -51,7 +52,7 @@ server.register(require('inert'), (err) => {
     method: 'GET',
     path: '/start',
     handler: function (request, reply) {
-      var id = request.query.id;
+      const id = request.query.id;
       logger.info(`ID is : ${id}`);
       startScans(id);
     }

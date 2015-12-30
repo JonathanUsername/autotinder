@@ -18,7 +18,7 @@ function Messenger () {
 			socket.on('start', (data) => {
 				console.log('start', JSON.stringify(data))
 				clients[data.fbid] = data.sockid;
-				startScans(data.fbid);
+				startScans(data.fbid, data.hitQuota, data.message);
 			})
 		});
 	}
