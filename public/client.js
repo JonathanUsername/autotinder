@@ -6,7 +6,7 @@ socket.on('seen', function (msg) {
   console.log(msg)
   msg.data.forEach(function(i, index){
     window.setTimeout(function(){
-      display($('#seen_people'), i)
+      displayPerson($('#seen_people'), i)
     }, index * 200)
   })
 })
@@ -18,7 +18,7 @@ socket.on('hello', function(msg) {
 socket.on('match', function (msg) {
   console.log(msg)
   $('#details').fadeIn();
-  display($('#matched_people'), msg.data)
+  displayPerson($('#matched_people'), msg.data)
 })
 
 socket.on('err', function (msg) {
@@ -36,13 +36,14 @@ $('#start').click(function(){
 	})
 })
 
-function display (elem, i) {
+function displayPerson (elem, i) {
 	elem.append('<li class="person">' + 
 		field('p', i.name, 'Name') +
 		field('img', i.photos[0].url) +
 		field('p', i.bio, 'Bio') +
-		i.common_friends.length > 0 ? field('p', i.common_friends.length, 'Common friends') : '' +
+		(i.common_friends.length > 0 ? field('p', i.common_friends.length, 'Common friends') : '') +
   	'</li>');
+
 	function field (tag, field, label) {
 		var fulllabel;
 		if (tag == 'img') {
