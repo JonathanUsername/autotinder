@@ -1,82 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>AutoTinder</title>
-<meta charset="UTF-8">
-<link rel='stylesheet' href='styles.css' >
+  <title>AutoTinder</title>
+  <meta charset="UTF-8">
+  <link rel='stylesheet' href='styles.css'>
+  <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
 </head>
+
 <body>
-
-<div id="start">Start!</div>
-
-<div id="error"></div>
-
-<div id="details">
-
-	<div class="divider"></div>
-
-	<p id="matched_people_label" class="biglabel">People I've matched:</p>
-	<ul id="matched_people"></ul>
-
-	<div class="divider"></div>
-
-	<p id="seen_people_label" class="biglabel">People I've seen:</p>
-	<ul id="seen_people"></ul>
-</div>
-
-<script src="//code.jquery.com/jquery-1.11.1.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io();
-
-  socket.on('seen', function (msg) {
-  	$('#details').show();
-  	msg.data.forEach(function(i, index){
-  		window.setTimeout(function(){
-  			display($('#seen_people'), i)
-  		}, index * 200)
-  	})
-  })
-
-  socket.on('match', function (msg) {
-  	$('#details').show();
-  	display($('#matched_people'), msg.data)
-  })
-
-  socket.on('err', function (msg) {
-  	$('#error').text('Error:\n\n' + JSON.stringify(msg.data)).show()
-  })
-
-  $('#start').click(function(){
-  	$('#seen_people').empty();
-  	$('#error').hide();
-  	socket.emit('start', {
-  		fbid: location.search.split('=')[2],
-  		sockid: socket.id
-  	})
-  })
-
-  function display (elem, i) {
-  	elem.append('<li class="person">' + 
-  		field('p', i.name, 'Name') +
-  		field('img', i.photos[0].url) +
-  		field('p', i.bio, 'Bio') +
-  		i.common_friends.length > 0 ? field('p', i.common_friends.length, 'Common friends') : '' +
-	  	'</li>');
-  	function field (tag, field, label) {
-  		var fulllabel;
-  		if (tag == 'img') {
-  			return '<img src=' + field + ' />'
-  		} 
-  		if (label) {
-  			fulllabel = '<h3>' + label + ': </h3>';
-  		} else {
-  			fulllabel = ''
-  		}
-  		return fulllabel + '<' + tag + '>' + field + '</' + tag + '>'
-  	}
-  }
-
-</script>
+  <div id="start">Start!</div>
+  <div id="error"></div>
+  <div id="details">
+    <div class="divider"></div>
+    <p id="matched_people_label" class="biglabel">People I've matched:</p>
+    <ul id="matched_people"></ul>
+    <div class="divider"></div>
+    <p id="seen_people_label" class="biglabel">People I've seen:</p>
+    <ul id="seen_people"></ul>
+  </div>
 </body>
+
 </html>
