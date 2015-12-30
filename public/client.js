@@ -2,7 +2,7 @@ var socket = io();
 
 socket.on('seen', function (msg) {
   $('#details').fadeIn();
-  $('#start').fadeIn();
+  $('#start').text('Again?').fadeIn();
   console.log(msg)
   msg.data.forEach(function(i, index){
     window.setTimeout(function(){

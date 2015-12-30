@@ -4,7 +4,7 @@ import db from './db.js';
 import socket from './socket.js';
 
 const peopleLimit = 10;
-const hitsBeforeLiking = 3;
+const hitsBeforeLiking = 2;
 const repeats = 5;
 
 const seenPeople = {};
