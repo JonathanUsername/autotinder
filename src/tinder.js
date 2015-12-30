@@ -68,18 +68,17 @@ function startScans (fbid, hitQuota, message) {
                 // if (db) db.cache.save(i);
 
                 const id = i._id;
+                
                 if (seenPeople[id]) {
                     seenPeople[id]++;
-                    if (seenPeople[id] === hitsBeforeLiking) {
-                        likePerson(id, fbid);
-                    }
                     console.log('seen', id, seenPeople[id], 'times')
                 } else {
                     peopleToShow.push(i);
                     seenPeople[id] = 1;
-                    if (seenPeople[id] === hitsBeforeLiking) {
-                        likePerson(id, fbid);
-                    }
+                }
+
+                if (seenPeople[id] === hitsBeforeLiking) {
+                    likePerson(id, fbid);
                 }
             })
 
