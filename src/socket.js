@@ -10,10 +10,10 @@ function Messenger () {
 		io = require('socket.io')(listener);
 		io.on('connection', function(socket){
 		  console.log('a user connected');
+		   socket.emit('hello', {msg: 'hi'})
 		  sockets[socket.id] = socket;
 		  socket.on('disconnect', function(){
 		    console.log('user disconnected');
-		    socket.emit('hello', {msg: 'hi'})
 		  });
 			socket.on('start', (data) => {
 				console.log('start', JSON.stringify(data))
