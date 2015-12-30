@@ -10,6 +10,10 @@ socket.on('seen', function (msg) {
   })
 })
 
+socket.on('hello', function(msg) {
+  console.log('Test:', msg)
+})
+
 socket.on('match', function (msg) {
   $('#details').fadeIn();
   display($('#matched_people'), msg.data)

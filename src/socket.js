@@ -13,6 +13,7 @@ function Messenger () {
 		  sockets[socket.id] = socket;
 		  socket.on('disconnect', function(){
 		    console.log('user disconnected');
+		    socket.emit('hello', {msg: 'hi'})
 		  });
 			socket.on('start', (data) => {
 				console.log('start', JSON.stringify(data))
@@ -24,7 +25,7 @@ function Messenger () {
 
 	this.send = (data) => {
 		const sockid = clients[data.fbid];
-		console.log('Emitting to client', data.fbid, clients[data.fbid])
+		console.log('Emitting to client', data.fbid, sockid)
 		sockets[sockid].emit(data.type, data)
 	}
 };
