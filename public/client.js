@@ -27,7 +27,7 @@ socket.on('like', function (msg) {
   console.log(msg)
   $('#details').fadeIn();
   displayPerson($('#liked_people'), msg.data)
-  $('#likes_remaining').text("Likes remaining: " + msg.likes_remaining)
+  $('#likes_remaining').text("Likes remaining: " + msg.likes)
 })
 
 socket.on('err', function (msg) {
