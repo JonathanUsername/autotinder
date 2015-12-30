@@ -10,10 +10,11 @@
 
 <body>
   <h1>AutoTinder</h1>
-  <form action="success" method="get">
+  <form action="login" method="get">
     <p>This app will search through your Tinder recommendations multiple times. If it finds someone keeps popping up, it will judge that they have liked you and will automatically like them back. If it's a match then it will send them the message "Hey ;)", and we all know what that REALLY means!</p>
     <p>That's right, it means "I have automatically selected you via a superficial app's cold, unfeeling algorithm and I haven't even seen your face yet, but I'm holding out for some Netflix and Chill, just in case."</p> 
     <p>You need to authenticate so that Tinder thinks it's legit. Grab your Access Token and your FB Profile Id and then log in. For the access token you will have to be quick and copy paste it from the url after clicking on the first link below. I know it's annoying but I spent ages trying to automate this and it's hard. It's almost like they don't want to make it easy.</p>
+    <p>Keep your Access Token secret, treat it like a password.</p> 
     <input name="token" type="text" placeholder="Your FB Access Token" value="" id="token">
     <a target="_blank" href="https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token">Get it here</a>
     <input name="id" id="fbid_input" type="text" placeholder="Your FB Profile Id" value="" id="token">

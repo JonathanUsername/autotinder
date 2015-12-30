@@ -27,7 +27,7 @@ server.register(require('inert'), (err) => {
 
   server.route({
     method: 'GET',
-    path: '/success',
+    path: '/login',
     handler: function (request, reply) {
       const token = request.query.token;
       const id = request.query.id;
