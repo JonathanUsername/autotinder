@@ -5,6 +5,7 @@
     <title>AutoTinder</title>
     <meta charset="UTF-8">
     <link rel='stylesheet' href='styles.css' >
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
 </head>
 
 <body>
@@ -15,7 +16,7 @@
     <p>You need to authenticate so that Tinder thinks it's legit. Grab your Access Token and your FB Profile Id and then log in. For the access token you will have to be quick and copy paste it from the url after clicking on the first link below. I know it's annoying but I spent ages trying to automate this and it's hard. It's almost like they don't want to make it easy.</p>
     <input name="token" type="text" placeholder="Your FB Access Token" value="" id="token">
     <a target="_blank" href="https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token">Get it here</a>
-    <input name="id" type="text" placeholder="Your FB Profile Id" value="" id="token">
+    <input name="id" id="fbid_input" type="text" placeholder="Your FB Profile Id" value="" id="token">
     <a target="_blank" href="http://findmyfbid.com/">Get it here</a>
     <input type="text" name="message" value="Hey ;)">
     <p class="label">What message should I send to any matches?</p>
@@ -23,6 +24,12 @@
     <p class="label">How many times out of 5 should I have to see the same person crop up before I like them? Set it to 1 if you want to like everyone, you chancer.</p>
     <input type="submit" value="Login">
   </form>
+  <script>
+  var id = localStorage.getItem('fbid')
+  if (id) {
+    $('#fbid_input').val(id)
+  }
+  </script>
 </body>
 
 </html>

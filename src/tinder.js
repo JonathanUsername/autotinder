@@ -51,7 +51,11 @@ function startScans (fbid, hitQuota, message) {
         if (!data || !data.results) {
             logger.error('Empty results!')
             logger.error(data)
-            data.reason = "No recommendations received."
+            if (data.message === "recs timeout" || data.message === "recs exhausted") {
+                data.reason = "No more recommendations. There's a limit. You'll have to wait half an hour or so before trying again."
+            } else {
+                data.reason = "No recommendations received. Try re-authenticating by clicking back in your browser."
+            }
             socket.send({
                 data: data,
                 type: 'err',
@@ -68,7 +72,7 @@ function startScans (fbid, hitQuota, message) {
                 // if (db) db.cache.save(i);
 
                 const id = i._id;
-                
+
                 if (seenPeople[id]) {
                     seenPeople[id]++;
                     console.log('seen', id, seenPeople[id], 'times')
@@ -77,8 +81,9 @@ function startScans (fbid, hitQuota, message) {
                     seenPeople[id] = 1;
                 }
 
-                if (seenPeople[id] === hitsBeforeLiking) {
-                    likePerson(id, fbid);
+                if (seenPeople[id] == hitsBeforeLiking) {
+                    console.log('we have a liker', id)
+                    likePerson(id, i);
                 }
             })
 
@@ -93,15 +98,22 @@ function startScans (fbid, hitQuota, message) {
         }
     }
 
-    function likePerson (id) {
+    function likePerson (id, person) {
+        console.log('liking', id)
         client.like(id, (err, data) => {
             logger.info('Liked', id, data);
             // if (db) db.likes.save(data);
 
-            if (data.matched) {
+            socket.send({
+                data: person,
+                likes: data.likes_remaining,
+                type: 'like',
+                fbid: fbid
+            })
+
+            if (data.match) {
                 socket.send({
-                    name: data.name,
-                    data: data,
+                    data: person,
                     type: 'match',
                     fbid: fbid
                 })

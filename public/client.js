@@ -1,5 +1,7 @@
 var socket = io();
 
+localStorage.setItem('fbid', getParameterByName('id'))
+
 socket.on('seen', function (msg) {
   $('#details').fadeIn();
   $('#start').text('Again?').fadeIn();
@@ -7,7 +9,7 @@ socket.on('seen', function (msg) {
   msg.data.forEach(function(i, index){
     window.setTimeout(function(){
       displayPerson($('#seen_people'), i)
-    }, index * 200)
+    }, index * 1)
   })
 })
 
@@ -21,9 +23,19 @@ socket.on('match', function (msg) {
   displayPerson($('#matched_people'), msg.data)
 })
 
+socket.on('like', function (msg) {
+  console.log(msg)
+  $('#details').fadeIn();
+  displayPerson($('#liked_people'), msg.data)
+  $('#likes_remaining').text("Likes remaining: " + msg.likes_remaining)
+})
+
 socket.on('err', function (msg) {
   console.log(msg)
-  $('#error').text('Error:\n\n' + JSON.stringify(msg.data)).fadeIn()
+  $('#details').hide();
+  $('#start').text('Again?').fadeIn();
+  var reason = msg.data.reason ? msg.data.reason : JSON.stringify(msg.data);
+  $('#error').text('Error:\n\n' + reason).fadeIn();
 })
 
 $('#start').click(function(){
