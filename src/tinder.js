@@ -3,10 +3,6 @@ import logger from './logger.js';
 import db from './db.js';
 import socket from './socket.js';
 
-const secret = require("../secrets.json");
-const myFBProfileId = secret.id;
-const myFBAccessToken = secret.token;
-
 const peopleLimit = 10;
 const hitsBeforeLiking = 3;
 const repeats = 5;
