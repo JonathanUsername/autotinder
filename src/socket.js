@@ -24,6 +24,7 @@ function Messenger () {
 
 	this.send = (data) => {
 		const sockid = clients[data.fbid];
+		console.log('Emitting to client', data.fbid, clients[data.fbid])
 		sockets[sockid].emit(data.type, data)
 	}
 };
