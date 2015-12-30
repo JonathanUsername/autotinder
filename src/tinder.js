@@ -101,8 +101,17 @@ function startScans (fbid, hitQuota, message) {
     function likePerson (id, person) {
         console.log('liking', id)
         client.like(id, (err, data) => {
-            logger.info('Liked', id, data);
+            if (err) {
+                logger.error(err);
+            }
+            
+            logger.info('Liked. id:', id, 'data:', JSON.stringify(data));
             // if (db) db.likes.save(data);
+
+            if (!data) {
+                logger.error('No data after liking. Err and data:', err, data);
+                return
+            }
 
             socket.send({
                 data: person,
