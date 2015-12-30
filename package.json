@@ -1,12 +1,12 @@
 {
-  "name": "tinderbot",
+  "name": "autotinder",
   "version": "1.0.0",
   "description": "",
   "main": "bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "babel --source-maps --out-dir lib/ src/ --watch",
-    "go": "node lib/index.js"
+    "start": "node lib/index.js"
   },
   "author": "",
   "license": "ISC",
